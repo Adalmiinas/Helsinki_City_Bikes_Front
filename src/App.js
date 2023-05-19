@@ -6,8 +6,24 @@ import StationsTable from "./Components/Stations";
 function App() {
 	return (
 		<div className="App">
-			<div style={{ maxHeight: "50%", overflow: "auto", minWidth: "40%" }}>
+			<div
+				style={{
+					display: "center",
+					maxHeight: "700px",
+					overflow: "auto",
+					maxWidth: "80%",
+				}}
+			>
 				<TripsTable />
+			</div>
+			<div
+				style={{
+					display: "center",
+					maxHeight: "700px",
+					overflow: "auto",
+					maxWidth: "80%",
+				}}
+			>
 				<StationsTable />
 			</div>
 		</div>

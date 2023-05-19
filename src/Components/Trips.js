@@ -20,17 +20,9 @@ export default function TripsTable() {
 	const [load, setLoad] = useState(false);
 
 	useEffect(() => {
-		getTrips(page);
-	}, [page]);
+		getTrips();
+	}, []);
 
-	useEffect(
-		() => {
-			getTrips(page);
-			setLoad(false);
-		},
-		[page],
-		load
-	);
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -44,6 +36,15 @@ export default function TripsTable() {
 		setPage(0);
 	};
 
+	const StyledTableRow = styled(TableRow)(({ theme }) => ({
+		"&:nth-of-type(odd)": {
+			backgroundColor: "#bfe3f9",
+		},
+		"&:nth-of-type(even)": {
+			backgroundColor: "white",
+		},
+	}));
+
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
 			backgroundColor: "#1a7ac8",
@@ -54,13 +55,12 @@ export default function TripsTable() {
 		},
 	}));
 
-	const getTrips = async (page) => {
+	const getTrips = async () => {
 		const [error, response] = await getAllTrips();
 		console.log(response);
 		console.log(error);
 		if (error === null) {
 			setData(response);
-			setLoad(true);
 		}
 	};
 
@@ -82,7 +82,7 @@ export default function TripsTable() {
 						? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						: data
 					).map((row) => (
-						<TableRow key={row.departure + row.id}>
+						<StyledTableRow key={row.departure + row.id}>
 							<TableCell component="th" scope="row">
 								{row.departureStationName}
 							</TableCell>
@@ -95,7 +95,7 @@ export default function TripsTable() {
 							<TableCell style={{ width: 160 }} align="right">
 								{row.duration}
 							</TableCell>
-						</TableRow>
+						</StyledTableRow>
 					))}
 
 					{emptyRows > 0 && (
