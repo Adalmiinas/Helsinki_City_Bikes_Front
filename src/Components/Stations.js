@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import Button from "@mui/material/Button";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
@@ -11,7 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import { useEffect, useState } from "react";
-import { getAllTrips, getOnePageOfTrips } from "../Service/TripInfo";
 import TablePaginationActions from "./Pagination";
 import { getAllStations } from "../Service/StationInfo";
 import OpenStationButton from "./OpenStationButton";
@@ -20,7 +18,6 @@ export default function StationsTable() {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [data, setData] = useState([]);
-	const [load, setLoad] = useState(false);
 
 	useEffect(() => {
 		getStations();
@@ -63,7 +60,7 @@ export default function StationsTable() {
 		console.log(error);
 		if (error === null) {
 			setData(response);
-			setLoad(true);
+
 			console.log(data);
 		}
 	};

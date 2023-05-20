@@ -10,14 +10,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import { useEffect, useState } from "react";
-import { getAllTrips, getOnePageOfTrips } from "../Service/TripInfo";
+import { getAllTrips } from "../Service/TripInfo";
 import TablePaginationActions from "./Pagination";
 
 export default function TripsTable() {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [data, setData] = useState([]);
-	const [load, setLoad] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [apiError, setApiError] = useState(null);
 
 	useEffect(() => {
 		getTrips();
@@ -56,75 +57,84 @@ export default function TripsTable() {
 	}));
 
 	const getTrips = async () => {
+		setLoading(true);
 		const [error, response] = await getAllTrips();
-		console.log(response);
-		console.log(error);
-		if (error === null) {
+
+		if (error !== null) {
+			setApiError(error);
+		}
+
+		if (response != null) {
 			setData(response);
 		}
+		setLoading(false);
 	};
 
 	return (
-		<TableContainer component={Paper}>
-			<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-				<TableHead>
-					<TableRow>
-						<StyledTableCell>Departure Station</StyledTableCell>
-						<StyledTableCell align="right">Return Station</StyledTableCell>
-						<StyledTableCell align="right">
-							Covered Distance (m)
-						</StyledTableCell>
-						<StyledTableCell align="right">Duration (sec.)</StyledTableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{(rowsPerPage > 0
-						? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-						: data
-					).map((row) => (
-						<StyledTableRow key={row.departure + row.id}>
-							<TableCell component="th" scope="row">
-								{row.departureStationName}
-							</TableCell>
-							<TableCell style={{ width: 160 }} align="right">
-								{row.returnStationName}
-							</TableCell>
-							<TableCell style={{ width: 160 }} align="right">
-								{row.distance}
-							</TableCell>
-							<TableCell style={{ width: 160 }} align="right">
-								{row.duration}
-							</TableCell>
-						</StyledTableRow>
-					))}
-
-					{emptyRows > 0 && (
-						<TableRow style={{ height: 53 * emptyRows }}>
-							<TableCell colSpan={6} />
+		<>
+			<TableContainer component={Paper}>
+				<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+					<TableHead>
+						<TableRow>
+							<StyledTableCell>Departure Station</StyledTableCell>
+							<StyledTableCell align="right">Return Station</StyledTableCell>
+							<StyledTableCell align="right">
+								Covered Distance (m)
+							</StyledTableCell>
+							<StyledTableCell align="right">Duration (sec.)</StyledTableCell>
 						</TableRow>
-					)}
-				</TableBody>
-				<TableFooter>
-					<TableRow>
-						<TablePagination
-							rowsPerPageOptions={[5, 10, 25]}
-							colSpan={3}
-							count={data.length}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							SelectProps={{
-								inputProps: {
-									"aria-label": "rows per page",
-								},
-								native: true,
-							}}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-							ActionsComponent={TablePaginationActions}
-						/>
-					</TableRow>
-				</TableFooter>
-			</Table>
-		</TableContainer>
+					</TableHead>
+					<TableBody>
+						{(rowsPerPage > 0
+							? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							: data
+						).map((row) => (
+							<StyledTableRow key={row.departure + row.id}>
+								<TableCell component="th" scope="row">
+									{row.departureStationName}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align="right">
+									{row.returnStationName}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align="right">
+									{row.distance}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align="right">
+									{row.duration}
+								</TableCell>
+							</StyledTableRow>
+						))}
+
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 53 * emptyRows }}>
+								<TableCell colSpan={6} />
+							</TableRow>
+						)}
+						{loading && <TableCell>Getting data...</TableCell>}
+						{apiError && <TableCell>{apiError}</TableCell>}
+					</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TablePagination
+								rowsPerPageOptions={[5, 10, 25]}
+								colSpan={3}
+								count={data.length}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								SelectProps={{
+									inputProps: {
+										"aria-label": "rows per page",
+									},
+									native: true,
+								}}
+								onPageChange={handleChangePage}
+								onRowsPerPageChange={handleChangeRowsPerPage}
+								ActionsComponent={TablePaginationActions}
+							/>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</TableContainer>
+		</>
 	);
 }

@@ -1,32 +1,20 @@
-import logo from "./logo.svg";
 import "./App.css";
-import TripsTable from "./Components/Trips";
-import StationsTable from "./Components/Stations";
+import TripsPage from "./Views/TripsPage";
+import StationsPage from "./Views/StationsPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./Components/Navbar";
 
 function App() {
 	return (
-		<div className="App">
-			<div
-				style={{
-					display: "center",
-					maxHeight: "700px",
-					overflow: "auto",
-					maxWidth: "80%",
-				}}
-			>
-				<TripsTable />
+		<BrowserRouter>
+			<div className="App">
+				<Navbar />
+				<Routes>
+					<Route path="/" element={<TripsPage />} />
+					<Route path="/stations/" element={<StationsPage />} />
+				</Routes>
 			</div>
-			<div
-				style={{
-					display: "center",
-					maxHeight: "700px",
-					overflow: "auto",
-					maxWidth: "80%",
-				}}
-			>
-				<StationsTable />
-			</div>
-		</div>
+		</BrowserRouter>
 	);
 }
 
