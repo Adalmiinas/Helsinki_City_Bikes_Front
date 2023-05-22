@@ -11,7 +11,6 @@ import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import { useEffect, useState } from "react";
 import { getAllTrips } from "../Service/TripInfo";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import TablePaginationActions from "./Pagination";
 
 export default function TripsTable() {
@@ -59,6 +58,7 @@ export default function TripsTable() {
 
 	const getTrips = async () => {
 		setLoading(true);
+
 		const [error, response] = await getAllTrips();
 
 		if (error !== null) {
