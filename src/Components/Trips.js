@@ -83,9 +83,7 @@ export default function TripsTable() {
 					>
 						<TableHead>
 							<TableRow>
-								<StyledTableCell style={{}}>
-									<TableSortLabel>Departure Station</TableSortLabel>
-								</StyledTableCell>
+								<StyledTableCell> Departure Station</StyledTableCell>
 								<StyledTableCell>Return Station</StyledTableCell>
 								<StyledTableCell>Covered Distance (m)</StyledTableCell>
 								<StyledTableCell>Duration (sec.)</StyledTableCell>
