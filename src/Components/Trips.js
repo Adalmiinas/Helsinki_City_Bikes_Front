@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import { useEffect, useState } from "react";
 import { getAllTrips } from "../Service/TripInfo";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import TablePaginationActions from "./Pagination";
 
 export default function TripsTable() {
@@ -72,69 +73,82 @@ export default function TripsTable() {
 
 	return (
 		<>
-			<TableContainer component={Paper}>
-				<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-					<TableHead>
-						<TableRow>
-							<StyledTableCell>Departure Station</StyledTableCell>
-							<StyledTableCell align="right">Return Station</StyledTableCell>
-							<StyledTableCell align="right">
-								Covered Distance (m)
-							</StyledTableCell>
-							<StyledTableCell align="right">Duration (sec.)</StyledTableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{(rowsPerPage > 0
-							? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							: data
-						).map((row) => (
-							<StyledTableRow key={row.departure + row.id}>
-								<TableCell component="th" scope="row">
-									{row.departureStationName}
-								</TableCell>
-								<TableCell style={{ width: 160 }} align="right">
-									{row.returnStationName}
-								</TableCell>
-								<TableCell style={{ width: 160 }} align="right">
-									{row.distance}
-								</TableCell>
-								<TableCell style={{ width: 160 }} align="right">
-									{row.duration}
-								</TableCell>
-							</StyledTableRow>
-						))}
-
-						{emptyRows > 0 && (
-							<TableRow style={{ height: 53 * emptyRows }}>
-								<TableCell colSpan={6} />
+			<h1>List of Trips in May 2021</h1>
+			<Paper sx={{ width: "100%", overflow: "hidden" }}>
+				<TableContainer sx={{ maxHeight: 700 }} component={Paper}>
+					<Table
+						stickyHeader
+						sx={{ minWidth: 500 }}
+						aria-label="custom pagination table"
+					>
+						<TableHead>
+							<TableRow>
+								<StyledTableCell style={{}}>
+									<TableSortLabel>Departure Station</TableSortLabel>
+								</StyledTableCell>
+								<StyledTableCell>Return Station</StyledTableCell>
+								<StyledTableCell>Covered Distance (m)</StyledTableCell>
+								<StyledTableCell>Duration (sec.)</StyledTableCell>
 							</TableRow>
-						)}
-						{loading && <TableCell>Getting data...</TableCell>}
-						{apiError && <TableCell>{apiError}</TableCell>}
-					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TablePagination
-								rowsPerPageOptions={[5, 10, 25]}
-								colSpan={3}
-								count={data.length}
-								rowsPerPage={rowsPerPage}
-								page={page}
-								SelectProps={{
-									inputProps: {
-										"aria-label": "rows per page",
-									},
-									native: true,
-								}}
-								onPageChange={handleChangePage}
-								onRowsPerPageChange={handleChangeRowsPerPage}
-								ActionsComponent={TablePaginationActions}
-							/>
-						</TableRow>
-					</TableFooter>
-				</Table>
-			</TableContainer>
+						</TableHead>
+						<TableBody>
+							{(rowsPerPage > 0
+								? data.slice(
+										page * rowsPerPage,
+										page * rowsPerPage + rowsPerPage
+								  )
+								: data
+							).map((row) => (
+								<StyledTableRow key={row.departure + row.id}>
+									<TableCell component="th" scope="row">
+										{row.departureStationName}
+									</TableCell>
+									<TableCell>{row.returnStationName}</TableCell>
+									<TableCell>{row.distance}</TableCell>
+									<TableCell>{row.duration}</TableCell>
+								</StyledTableRow>
+							))}
+
+							{emptyRows > 0 && (
+								<TableRow style={{ height: 53 * emptyRows }}>
+									<TableCell colSpan={4} />
+								</TableRow>
+							)}
+
+							{loading && (
+								<TableRow>
+									<TableCell>Getting data...</TableCell>
+								</TableRow>
+							)}
+							{apiError && (
+								<TableRow>
+									<TableCell>{apiError}</TableCell>
+								</TableRow>
+							)}
+						</TableBody>
+						<TableFooter>
+							<TableRow>
+								<TablePagination
+									rowsPerPageOptions={[5, 10, 25]}
+									colSpan={3}
+									count={data.length}
+									rowsPerPage={rowsPerPage}
+									page={page}
+									SelectProps={{
+										inputProps: {
+											"aria-label": "rows per page",
+										},
+										native: true,
+									}}
+									onPageChange={handleChangePage}
+									onRowsPerPageChange={handleChangeRowsPerPage}
+									ActionsComponent={TablePaginationActions}
+								/>
+							</TableRow>
+						</TableFooter>
+					</Table>
+				</TableContainer>
+			</Paper>
 		</>
 	);
 }

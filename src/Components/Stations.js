@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import TextField from "@mui/material/TextField";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
@@ -18,6 +19,9 @@ export default function StationsTable() {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [apiError, setApiError] = useState(null);
+	const [inputText, setInputText] = useState("");
 
 	useEffect(() => {
 		getStations();
@@ -35,6 +39,12 @@ export default function StationsTable() {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	let inputHandler = (e) => {
+		var lowerCase = e.target.value.toLowerCase();
+		setInputText(lowerCase);
+	};
+
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
 		"&:nth-of-type(odd)": {
 			backgroundColor: "#bfe3f9",
@@ -55,67 +65,109 @@ export default function StationsTable() {
 	}));
 
 	const getStations = async () => {
+		setLoading(true);
 		const [error, response] = await getAllStations();
-		console.log(response);
-		console.log(error);
-		if (error === null) {
-			setData(response);
 
-			console.log(data);
+		if (error !== null) {
+			setApiError(error);
 		}
+
+		if (response != null) {
+			setData(response);
+		}
+		setLoading(false);
 	};
 
-	return (
-		<TableContainer component={Paper}>
-			<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-				<TableHead>
-					<TableRow>
-						<StyledTableCell>Station</StyledTableCell>
-						<StyledTableCell></StyledTableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{(rowsPerPage > 0
-						? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-						: data
-					).map((row) => (
-						<StyledTableRow key={row.id + row.stationId}>
-							<TableCell component="th" scope="row">
-								{row.englishName}
-							</TableCell>
-							<TableCell style={{ width: 160 }} align="right">
-								<OpenStationButton stationId={row.stationId} />
-							</TableCell>
-						</StyledTableRow>
-					))}
+	const filteredData = data.filter((el) => {
+		if (inputText === null) {
+			return el;
+		} else {
+			if (el.name != null) {
+				return el.name.toLowerCase().includes(inputText);
+			}
+			return "";
+		}
+	});
 
-					{emptyRows > 0 && (
-						<TableRow style={{ height: 53 * emptyRows }}>
-							<TableCell colSpan={6} />
+	return (
+		<>
+			<TextField
+				style={{
+					width: "100%",
+					marginTop: "20px",
+					marginBottom: "20px",
+					marginLeft: "5px",
+					align: "center",
+				}}
+				id="search"
+				label="Search"
+				variant="outlined"
+				onChange={inputHandler}
+			/>
+			<TableContainer component={Paper}>
+				<Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+					<TableHead>
+						<TableRow>
+							<StyledTableCell>Station</StyledTableCell>
+							<StyledTableCell></StyledTableCell>
 						</TableRow>
-					)}
-				</TableBody>
-				<TableFooter>
-					<TableRow>
-						<TablePagination
-							rowsPerPageOptions={[5, 10, 25]}
-							colSpan={3}
-							count={data.length}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							SelectProps={{
-								inputProps: {
-									"aria-label": "rows per page",
-								},
-								native: true,
-							}}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-							ActionsComponent={TablePaginationActions}
-						/>
-					</TableRow>
-				</TableFooter>
-			</Table>
-		</TableContainer>
+					</TableHead>
+					<TableBody>
+						{(rowsPerPage > 0
+							? filteredData.slice(
+									page * rowsPerPage,
+									page * rowsPerPage + rowsPerPage
+							  )
+							: filteredData
+						).map((row) => (
+							<StyledTableRow key={row.id + row.stationId}>
+								<TableCell component="th" scope="row">
+									{row.englishName}
+								</TableCell>
+								<TableCell style={{ width: 160 }} align="right">
+									<OpenStationButton stationId={row.stationId} />
+								</TableCell>
+							</StyledTableRow>
+						))}
+
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 53 * emptyRows }}>
+								<TableCell colSpan={6} />
+							</TableRow>
+						)}
+						{loading && (
+							<TableRow>
+								<TableCell>Getting data...</TableCell>
+							</TableRow>
+						)}
+						{apiError && (
+							<TableRow>
+								<TableCell>{apiError}</TableCell>
+							</TableRow>
+						)}
+					</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TablePagination
+								rowsPerPageOptions={[5, 10, 25]}
+								colSpan={3}
+								count={data.length}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								SelectProps={{
+									inputProps: {
+										"aria-label": "rows per page",
+									},
+									native: true,
+								}}
+								onPageChange={handleChangePage}
+								onRowsPerPageChange={handleChangeRowsPerPage}
+								ActionsComponent={TablePaginationActions}
+							/>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</TableContainer>
+		</>
 	);
 }

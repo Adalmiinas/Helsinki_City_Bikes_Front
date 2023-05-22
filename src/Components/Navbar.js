@@ -7,7 +7,15 @@ const Navbar = () => {
 			<AppBar position="sticky" sx={{ bgcolor: "white" }}>
 				<Container maxWidth="l">
 					<Toolbar disableGutters>
-						<div>
+						<Box
+							sx={{
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "space-between",
+								alignItems: "right",
+								width: "1400px",
+							}}
+						>
 							<img
 								src={"/HSL-logo.png"}
 								width="150"
@@ -15,29 +23,24 @@ const Navbar = () => {
 								alt="Logo"
 								className="logo"
 							/>
-						</div>
-
-						<div>
 							<Box
 								sx={{
 									display: "flex",
 									flexDirection: "row",
-									justifyContent: "space-around",
-									alignItems: "",
+									justifyContent: "space-between",
+									alignItems: "center",
+									width: "220px",
 								}}
 							>
-								<Box>
-									<Button href="/" size="large" variant="contained">
-										Trip
-									</Button>
-								</Box>
-								<Box>
-									<Button size="large" variant="contained" href="/stations">
-										Station
-									</Button>
-								</Box>
+								<Button href="/" size="large" variant="contained">
+									Trips
+								</Button>
+
+								<Button size="large" variant="contained" href="/stations">
+									Stations
+								</Button>
 							</Box>
-						</div>
+						</Box>
 					</Toolbar>
 				</Container>
 			</AppBar>
