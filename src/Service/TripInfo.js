@@ -1,10 +1,3 @@
-const apiUrl = process.env.REACT_APP_API_URL;
-
-/**
- * Get user info with id
- * @param {*} userId
- * @returns [null, data] if ok, else [error.message, []]
- */
 export const getOnePageOfTrips = async (page) => {
 	try {
 		const response = await fetch(
@@ -32,6 +25,26 @@ export const getAllTrips = async () => {
 				"Content-Type": "application/json",
 			},
 		});
+		if (!response.ok) {
+			throw new Error("Could not complete request!");
+		}
+		const data = await response.json();
+		return [null, data];
+	} catch (error) {
+		return [error.message, []];
+	}
+};
+
+export const getCountOfTrips = async () => {
+	try {
+		const response = await fetch(
+			`https://localhost:7183/Trip/GetCountOfTrips`,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
 		if (!response.ok) {
 			throw new Error("Could not complete request!");
 		}

@@ -1,79 +1,66 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import { useEffect, useState } from "react";
-import { getAllTrips } from "../Service/TripInfo";
+import { getCountOfTrips, getOnePageOfTrips } from "../Service/TripInfo";
 import TablePaginationActions from "./Pagination";
+import { StyledTableCell, StyledTableRow } from "./StyledTable";
 
 export default function TripsTable() {
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [lastPage, setLastPage] = React.useState(0);
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [refresh, setRefresh] = useState(false);
 	const [apiError, setApiError] = useState(null);
 
 	useEffect(() => {
-		getTrips();
-	}, []);
+		getTrips(page);
+	}, [page]);
 
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+	useEffect(() => {
+		getTrips(page);
+		setRefresh(false);
+	}, [page, refresh]);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
+		setRefresh(true);
 	};
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
-
-	const StyledTableRow = styled(TableRow)(({ theme }) => ({
-		"&:nth-of-type(odd)": {
-			backgroundColor: "#bfe3f9",
-		},
-		"&:nth-of-type(even)": {
-			backgroundColor: "white",
-		},
-	}));
-
-	const StyledTableCell = styled(TableCell)(({ theme }) => ({
-		[`&.${tableCellClasses.head}`]: {
-			backgroundColor: "#1a7ac8",
-			color: theme.palette.common.white,
-		},
-		[`&.${tableCellClasses.body}`]: {
-			fontSize: 14,
-		},
-	}));
-
-	const getTrips = async () => {
+	const getTrips = async (page) => {
 		setLoading(true);
 
-		const [error, response] = await getAllTrips();
+		const [error, response] = await getOnePageOfTrips(page + 1);
+		const [countError, data] = await getCountOfTrips();
 
 		if (error !== null) {
 			setApiError(error);
 		}
 
+		if (countError !== null) {
+			setApiError(countError);
+		}
+
 		if (response != null) {
 			setData(response);
 		}
+		if (data != null) {
+			setLastPage(data[0].count);
+		}
+
 		setLoading(false);
 	};
 
 	return (
 		<>
-			<h1>List of Trips in May 2021</h1>
+			<h1>List of Trips</h1>
 			<Paper sx={{ width: "100%", overflow: "hidden" }}>
 				<TableContainer sx={{ maxHeight: 700 }} component={Paper}>
 					<Table
@@ -90,13 +77,7 @@ export default function TripsTable() {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{(rowsPerPage > 0
-								? data.slice(
-										page * rowsPerPage,
-										page * rowsPerPage + rowsPerPage
-								  )
-								: data
-							).map((row) => (
+							{data.map((row) => (
 								<StyledTableRow key={row.departure + row.id}>
 									<TableCell component="th" scope="row">
 										{row.departureStationName}
@@ -106,12 +87,6 @@ export default function TripsTable() {
 									<TableCell>{row.duration}</TableCell>
 								</StyledTableRow>
 							))}
-
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 53 * emptyRows }}>
-									<TableCell colSpan={4} />
-								</TableRow>
-							)}
 
 							{loading && (
 								<TableRow>
@@ -125,22 +100,17 @@ export default function TripsTable() {
 							)}
 						</TableBody>
 						<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[5, 10, 25]}
-									colSpan={3}
-									count={data.length}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										inputProps: {
-											"aria-label": "rows per page",
-										},
-										native: true,
-									}}
+							<TableRow
+								style={{
+									display: "flex",
+									flexDirection: "row",
+								}}
+							>
+								<TablePaginationActions
 									onPageChange={handleChangePage}
-									onRowsPerPageChange={handleChangeRowsPerPage}
-									ActionsComponent={TablePaginationActions}
+									page={page}
+									count={lastPage}
+									table={"trip"}
 								/>
 							</TableRow>
 						</TableFooter>

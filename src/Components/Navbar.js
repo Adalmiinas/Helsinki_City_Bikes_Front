@@ -32,12 +32,11 @@ const Navbar = () => {
 									width: "220px",
 								}}
 							>
-								<Button href="/" size="large" variant="contained">
-									Trips
-								</Button>
-
-								<Button size="large" variant="contained" href="/stations">
+								<Button size="large" variant="contained" href="/">
 									Stations
+								</Button>
+								<Button href="/trips" size="large" variant="contained">
+									Trips
 								</Button>
 							</Box>
 						</Box>

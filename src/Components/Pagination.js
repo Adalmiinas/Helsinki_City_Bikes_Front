@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { useTheme, styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -11,7 +11,7 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 function TablePaginationActions(props) {
 	const theme = useTheme();
 
-	const { count, page, rowsPerPage, onPageChange } = props;
+	const { count, page, rowsPerPage, onPageChange, table } = props;
 
 	const handleFirstPageButtonClick = (event) => {
 		onPageChange(event, 0);
@@ -26,11 +26,17 @@ function TablePaginationActions(props) {
 	};
 
 	const handleLastPageButtonClick = (event) => {
-		onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+		if (table === "trip") {
+			var newPage = Math.ceil(count / 10 - 1);
+
+			onPageChange(event, newPage);
+		} else {
+			onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+		}
 	};
 
 	return (
-		<Box sx={{ flexShrink: 0, ml: 2.5 }}>
+		<Box sx={{ flexShrink: 0, ml: 2.5, display: "flex", flexDirection: "row" }}>
 			<IconButton
 				onClick={handleFirstPageButtonClick}
 				disabled={page === 0}
@@ -49,9 +55,10 @@ function TablePaginationActions(props) {
 					<KeyboardArrowLeft />
 				)}
 			</IconButton>
+			<p>{page}</p>
 			<IconButton
 				onClick={handleNextButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				disabled={page === Math.ceil(count / 10 - 1)}
 				aria-label="next page"
 			>
 				{theme.direction === "rtl" ? (
@@ -62,7 +69,7 @@ function TablePaginationActions(props) {
 			</IconButton>
 			<IconButton
 				onClick={handleLastPageButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				disabled={count === 0}
 				aria-label="last page"
 			>
 				{theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
@@ -77,5 +84,4 @@ TablePaginationActions.propTypes = {
 	count: PropTypes.number.isRequired,
 	onPageChange: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired,
 };

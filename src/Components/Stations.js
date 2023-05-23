@@ -1,9 +1,8 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TextField from "@mui/material/TextField";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
@@ -14,6 +13,7 @@ import { useEffect, useState } from "react";
 import TablePaginationActions from "./Pagination";
 import { getAllStations } from "../Service/StationInfo";
 import OpenStationButton from "./OpenStationButton";
+import { StyledTableCell, StyledTableRow } from "./StyledTable";
 
 export default function StationsTable() {
 	const [page, setPage] = React.useState(0);
@@ -44,25 +44,6 @@ export default function StationsTable() {
 		var lowerCase = e.target.value.toLowerCase();
 		setInputText(lowerCase);
 	};
-
-	const StyledTableRow = styled(TableRow)(({ theme }) => ({
-		"&:nth-of-type(odd)": {
-			backgroundColor: "#bfe3f9",
-		},
-		"&:nth-of-type(even)": {
-			backgroundColor: "white",
-		},
-	}));
-
-	const StyledTableCell = styled(TableCell)(({ theme }) => ({
-		[`&.${tableCellClasses.head}`]: {
-			backgroundColor: "#1a7ac8",
-			color: theme.palette.common.white,
-		},
-		[`&.${tableCellClasses.body}`]: {
-			fontSize: 14,
-		},
-	}));
 
 	const getStations = async () => {
 		setLoading(true);
