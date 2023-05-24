@@ -35,7 +35,7 @@ export const getStationById = async (id) => {
 	}
 };
 
-export const GetDeparturesFromStation = async (id) => {
+export const getDeparturesFromStation = async (id) => {
 	try {
 		const response = await fetch(
 			`https://localhost:7183/GetDeparturesFromStation?id=${id}`,
@@ -55,7 +55,7 @@ export const GetDeparturesFromStation = async (id) => {
 	}
 };
 
-export const GetReturnsForStation = async (id) => {
+export const getReturnsForStation = async (id) => {
 	try {
 		const response = await fetch(
 			`https://localhost:7183/GetReturnsForStation?id=${id}`,
@@ -75,10 +75,10 @@ export const GetReturnsForStation = async (id) => {
 	}
 };
 
-export const GetTop5ReturnStations = async (id) => {
+export const getTop5ReturnStationsForStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetReturnsForStation?id=${id}`,
+			`https://localhost:7183/Station/Top5ReturnStations?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -95,10 +95,10 @@ export const GetTop5ReturnStations = async (id) => {
 	}
 };
 
-export const GetTop5DepartureStations = async (id) => {
+export const getTop5DepartureStationsForStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetReturnsForStation?id=${id}`,
+			`https://localhost:7183/Station/Top5DepartureStations?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -115,10 +115,10 @@ export const GetTop5DepartureStations = async (id) => {
 	}
 };
 
-export const GetAverageDistanceStartingFromStation = async (id) => {
+export const getAverageDistanceStartingFromStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetReturnsForStation?id=${id}`,
+			`https://localhost:7183/Station/GetAvgDistanceStartingFrom?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -135,10 +135,10 @@ export const GetAverageDistanceStartingFromStation = async (id) => {
 	}
 };
 
-export const GetAverageDistanceEndingForStation = async (id) => {
+export const getAverageDistanceEndingForStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetReturnsForStation?id=${id}`,
+			`https://localhost:7183/Station/GetAvgDistanceEndingTo?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
