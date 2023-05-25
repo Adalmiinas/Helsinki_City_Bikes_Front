@@ -19,6 +19,70 @@ const SingleStation = (props) => {
 	const [distanceEnding, setDistanceEnding] = useState([]);
 
 	useEffect(() => {
+		const getStation = async () => {
+			const [error, response] = await getStationById(props.stationId);
+
+			if (error === null) {
+				setData(response);
+			}
+		};
+
+		const getDepartureCount = async () => {
+			const [error, response] = await getDeparturesFromStation(props.stationId);
+
+			if (error === null) {
+				setDepartureCount(response);
+			}
+		};
+
+		const getReturnCount = async () => {
+			const [error, response] = await getReturnsForStation(props.stationId);
+
+			if (error === null) {
+				setReturnCount(response);
+			}
+		};
+
+		const getTopDepartures = async () => {
+			const [error, response] = await getTop5DepartureStationsForStation(
+				props.stationId
+			);
+
+			if (error === null) {
+				setTopDepartures(response);
+			}
+		};
+
+		const getTopReturns = async () => {
+			const [error, response] = await getTop5ReturnStationsForStation(
+				props.stationId
+			);
+
+			if (error === null) {
+				setTopReturns(response);
+			}
+		};
+
+		const getAverageDistanceStarting = async () => {
+			const [error, response] = await getAverageDistanceStartingFromStation(
+				props.stationId
+			);
+
+			if (error === null) {
+				setDistanceStarting(response);
+			}
+		};
+
+		const getAverageDistanceEnding = async () => {
+			const [error, response] = await getAverageDistanceEndingForStation(
+				props.stationId
+			);
+
+			if (error === null) {
+				setDistanceEnding(response);
+			}
+		};
+
 		getStation();
 		getDepartureCount();
 		getReturnCount();
@@ -26,70 +90,7 @@ const SingleStation = (props) => {
 		getTopReturns();
 		getAverageDistanceStarting();
 		getAverageDistanceEnding();
-	}, []);
-
-	const getStation = async () => {
-		const [error, response] = await getStationById(props.stationId);
-
-		if (error === null) {
-			setData(response);
-		}
-	};
-	const getDepartureCount = async () => {
-		const [error, response] = await getDeparturesFromStation(props.stationId);
-
-		if (error === null) {
-			setDepartureCount(response);
-		}
-	};
-
-	const getReturnCount = async () => {
-		const [error, response] = await getReturnsForStation(props.stationId);
-
-		if (error === null) {
-			setReturnCount(response);
-		}
-	};
-
-	const getTopDepartures = async () => {
-		const [error, response] = await getTop5DepartureStationsForStation(
-			props.stationId
-		);
-
-		if (error === null) {
-			setTopDepartures(response);
-		}
-	};
-
-	const getTopReturns = async () => {
-		const [error, response] = await getTop5ReturnStationsForStation(
-			props.stationId
-		);
-
-		if (error === null) {
-			setTopReturns(response);
-		}
-	};
-
-	const getAverageDistanceStarting = async () => {
-		const [error, response] = await getAverageDistanceStartingFromStation(
-			props.stationId
-		);
-
-		if (error === null) {
-			setDistanceStarting(response);
-		}
-	};
-
-	const getAverageDistanceEnding = async () => {
-		const [error, response] = await getAverageDistanceEndingForStation(
-			props.stationId
-		);
-
-		if (error === null) {
-			setDistanceEnding(response);
-		}
-	};
+	}, [props.stationId]);
 
 	return (
 		<div>
@@ -99,11 +100,15 @@ const SingleStation = (props) => {
 					<>
 						<h2>{data[0].name}</h2>
 						<p>Address: {data[0].address}</p>
-						<h4>Total Number of Journeys</h4>
-						<p>Departures from station: {departureCount[0].count}</p>
-						<p>Returns to station: {returnCount[0].count}</p>
 					</>
 				)}
+			{departureCount.length > 0 && returnCount.length > 0 && (
+				<>
+					<h4>Total Number of Journeys</h4>
+					<p>Departures from station: {departureCount[0].count}</p>
+					<p>Returns to station: {returnCount[0].count}</p>
+				</>
+			)}
 			{distanceStarting.length > 0 && distanceEnding.length > 0 && (
 				<div>
 					<p>

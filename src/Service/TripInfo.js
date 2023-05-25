@@ -1,7 +1,7 @@
 export const getOnePageOfTrips = async (page) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetOnePage?page=${page}`,
+			`https://localhost:7183/Trip/onePage?page=${page}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const getOnePageOfTrips = async (page) => {
 
 export const getAllTrips = async () => {
 	try {
-		const response = await fetch(`https://localhost:7183/GetAllTrips`, {
+		const response = await fetch(`https://localhost:7183/Trip`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -37,14 +37,11 @@ export const getAllTrips = async () => {
 
 export const getCountOfTrips = async () => {
 	try {
-		const response = await fetch(
-			`https://localhost:7183/Trip/GetCountOfTrips`,
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		const response = await fetch(`https://localhost:7183/Trip/Count`, {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 		if (!response.ok) {
 			throw new Error("Could not complete request!");
 		}

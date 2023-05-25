@@ -1,6 +1,6 @@
 export const getAllStations = async () => {
 	try {
-		const response = await fetch(`https://localhost:7183/GetAllStations`, {
+		const response = await fetch(`https://localhost:7183/Station`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -17,14 +17,11 @@ export const getAllStations = async () => {
 
 export const getStationById = async (id) => {
 	try {
-		const response = await fetch(
-			`https://localhost:7183/GetStationById?id=${id}`,
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		const response = await fetch(`https://localhost:7183/Station/id?id=${id}`, {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 		if (!response.ok) {
 			throw new Error("Could not complete request!");
 		}
@@ -38,7 +35,7 @@ export const getStationById = async (id) => {
 export const getDeparturesFromStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetDeparturesFromStation?id=${id}`,
+			`https://localhost:7183/Station/Departures?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -58,7 +55,7 @@ export const getDeparturesFromStation = async (id) => {
 export const getReturnsForStation = async (id) => {
 	try {
 		const response = await fetch(
-			`https://localhost:7183/GetReturnsForStation?id=${id}`,
+			`https://localhost:7183/Station/Returns?id=${id}`,
 			{
 				headers: {
 					"Content-Type": "application/json",

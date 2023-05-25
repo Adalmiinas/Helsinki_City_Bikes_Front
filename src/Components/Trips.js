@@ -106,12 +106,14 @@ export default function TripsTable() {
 									flexDirection: "row",
 								}}
 							>
-								<TablePaginationActions
-									onPageChange={handleChangePage}
-									page={page}
-									count={lastPage}
-									table={"trip"}
-								/>
+								<TableCell>
+									<TablePaginationActions
+										onPageChange={handleChangePage}
+										page={page}
+										count={lastPage}
+										table={"trip"}
+									/>
+								</TableCell>
 							</TableRow>
 						</TableFooter>
 					</Table>
