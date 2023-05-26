@@ -13,7 +13,7 @@ const Navbar = () => {
 								flexDirection: "row",
 								justifyContent: "space-between",
 								alignItems: "right",
-								width: "1400px",
+								width: "100%",
 							}}
 						>
 							<img

@@ -61,6 +61,11 @@ export default function TripsTable() {
 	return (
 		<>
 			<h1>List of Trips</h1>
+			{loading && (
+				<TableRow>
+					<TableCell>Getting data...</TableCell>
+				</TableRow>
+			)}
 			<Paper sx={{ width: "100%", overflow: "hidden" }}>
 				<TableContainer sx={{ maxHeight: 700 }} component={Paper}>
 					<Table
@@ -88,11 +93,6 @@ export default function TripsTable() {
 								</StyledTableRow>
 							))}
 
-							{loading && (
-								<TableRow>
-									<TableCell>Getting data...</TableCell>
-								</TableRow>
-							)}
 							{apiError && (
 								<TableRow>
 									<TableCell>{apiError}</TableCell>
