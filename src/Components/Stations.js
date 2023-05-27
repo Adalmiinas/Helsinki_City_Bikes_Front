@@ -15,6 +15,10 @@ import { getAllStations } from "../Service/StationInfo";
 import OpenStationButton from "./OpenStationButton";
 import { StyledTableCell, StyledTableRow } from "./StyledTable";
 
+/**
+ * Creates the table and adds the data
+ * @returns stations table
+ */
 export default function StationsTable() {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -40,11 +44,13 @@ export default function StationsTable() {
 		setPage(0);
 	};
 
+	//input handler for the search
 	let inputHandler = (e) => {
 		var lowerCase = e.target.value.toLowerCase();
 		setInputText(lowerCase);
 	};
 
+	//Get all stations
 	const getStations = async () => {
 		setLoading(true);
 		const [error, response] = await getAllStations();
@@ -59,6 +65,7 @@ export default function StationsTable() {
 		setLoading(false);
 	};
 
+	//filter the station data with the search input
 	const filteredData = data.filter((el) => {
 		if (inputText === null) {
 			return el;

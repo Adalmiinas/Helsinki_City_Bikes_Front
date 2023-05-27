@@ -36,6 +36,8 @@ Trips view
 - Displays all the trips ten at a time
 - Pagination
 
+View pictures of the application in the picture folder.
+
 ## 3. Technologies
 
 - React

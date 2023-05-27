@@ -8,6 +8,11 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 
+/**
+ * handles the pagination on the table
+ * @param {*} props count, page, rowsPerPage, onPageChange, table
+ * @returns pagination
+ */
 function TablePaginationActions(props) {
 	const theme = useTheme();
 

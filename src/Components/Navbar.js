@@ -1,6 +1,10 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { Container } from "@mui/system";
 
+/**
+ * Creates a navbar with buttons for station and trip view
+ * @returns navbar
+ */
 const Navbar = () => {
 	return (
 		<div>

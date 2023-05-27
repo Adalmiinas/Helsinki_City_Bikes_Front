@@ -12,6 +12,10 @@ import { getCountOfTrips, getOnePageOfTrips } from "../Service/TripInfo";
 import TablePaginationActions from "./Pagination";
 import { StyledTableCell, StyledTableRow } from "./StyledTable";
 
+/**
+ * Creates the trips table and adds the data to it
+ * @returns trips table
+ */
 export default function TripsTable() {
 	const [page, setPage] = React.useState(0);
 	const [lastPage, setLastPage] = React.useState(0);
@@ -24,6 +28,7 @@ export default function TripsTable() {
 		getTrips(page);
 	}, [page]);
 
+	//runs after changing the page to fetch new page of trips
 	useEffect(() => {
 		getTrips(page);
 		setRefresh(false);
@@ -34,6 +39,7 @@ export default function TripsTable() {
 		setRefresh(true);
 	};
 
+	//get one page of trips and the amount of trips in total
 	const getTrips = async (page) => {
 		setLoading(true);
 
@@ -54,7 +60,6 @@ export default function TripsTable() {
 		if (data != null) {
 			setLastPage(data[0].count);
 		}
-
 		setLoading(false);
 	};
 

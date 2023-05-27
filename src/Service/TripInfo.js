@@ -1,3 +1,8 @@
+/**
+ * Get on page of trips, which is 10 trips at a time
+ * @param {*} page number
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getOnePageOfTrips = async (page) => {
 	try {
 		const response = await fetch(
@@ -18,6 +23,10 @@ export const getOnePageOfTrips = async (page) => {
 	}
 };
 
+/**
+ * Get all trips
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getAllTrips = async () => {
 	try {
 		const response = await fetch(`https://localhost:7183/Trip`, {
@@ -35,6 +44,10 @@ export const getAllTrips = async () => {
 	}
 };
 
+/**
+ * Get the amount of trips in the database
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getCountOfTrips = async () => {
 	try {
 		const response = await fetch(`https://localhost:7183/Trip/Count`, {

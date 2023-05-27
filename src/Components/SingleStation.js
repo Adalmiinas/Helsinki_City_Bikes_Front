@@ -9,6 +9,11 @@ import {
 } from "../Service/StationInfo";
 import { useEffect, useState } from "react";
 
+/**
+ * fetches all the info needed for the station information
+ * @param {*} props stationid
+ * @returns single station info
+ */
 const SingleStation = (props) => {
 	const [data, setData] = useState([]);
 	const [departureCount, setDepartureCount] = useState([]);
@@ -18,6 +23,7 @@ const SingleStation = (props) => {
 	const [distanceStarting, setDistanceStarting] = useState([]);
 	const [distanceEnding, setDistanceEnding] = useState([]);
 
+	//fetch all the data when rendering the first time
 	useEffect(() => {
 		const getStation = async () => {
 			const [error, response] = await getStationById(props.stationId);

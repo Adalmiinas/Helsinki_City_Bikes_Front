@@ -1,3 +1,7 @@
+/**
+ * Get all stations
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getAllStations = async () => {
 	try {
 		const response = await fetch(`https://localhost:7183/Station`, {
@@ -15,6 +19,11 @@ export const getAllStations = async () => {
 	}
 };
 
+/**
+ * get station by its id
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getStationById = async (id) => {
 	try {
 		const response = await fetch(`https://localhost:7183/Station/id?id=${id}`, {
@@ -32,6 +41,11 @@ export const getStationById = async (id) => {
 	}
 };
 
+/**
+ * Get the amount of depatures from a station
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getDeparturesFromStation = async (id) => {
 	try {
 		const response = await fetch(
@@ -52,6 +66,11 @@ export const getDeparturesFromStation = async (id) => {
 	}
 };
 
+/**
+ * Get the amount of returns for the station
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getReturnsForStation = async (id) => {
 	try {
 		const response = await fetch(
@@ -72,6 +91,11 @@ export const getReturnsForStation = async (id) => {
 	}
 };
 
+/**
+ * Get the top 5 stations where people return when starting from here
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getTop5ReturnStationsForStation = async (id) => {
 	try {
 		const response = await fetch(
@@ -92,6 +116,11 @@ export const getTop5ReturnStationsForStation = async (id) => {
 	}
 };
 
+/**
+ * get top 5 stations where people have departed from when returning here
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getTop5DepartureStationsForStation = async (id) => {
 	try {
 		const response = await fetch(
@@ -112,6 +141,11 @@ export const getTop5DepartureStationsForStation = async (id) => {
 	}
 };
 
+/**
+ * Get the avarege distance when starting from this station
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getAverageDistanceStartingFromStation = async (id) => {
 	try {
 		const response = await fetch(
@@ -132,6 +166,11 @@ export const getAverageDistanceStartingFromStation = async (id) => {
 	}
 };
 
+/**
+ * get the average distance when returning at this station
+ * @param {*} id station id
+ * @returns [null, data] if ok, else [error.message, []]
+ */
 export const getAverageDistanceEndingForStation = async (id) => {
 	try {
 		const response = await fetch(

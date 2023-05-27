@@ -4,7 +4,7 @@ import { useState } from "react";
 import SingleStation from "./SingleStation";
 
 /**
- * Update project button that opens a modal with the form.
+ * See more button that opens a modal with the single station info.
  * @param {*} props
  */
 const OpenStationButton = (props) => {
