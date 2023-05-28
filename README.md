@@ -31,12 +31,15 @@ Stations view
   - Top 5 most popular return stations for journeys starting from the station
   - Top 5 most popular departure stations for journeys ending at the station
 
+![Station view](pictures/StationView.png)
+![Single Station view](pictures/SingleStationView.png)
+
 Trips view
 
 - Displays all the trips ten at a time
 - Pagination
 
-View pictures of the application in the picture folder.
+![Trip view](pictures/TripView.png)
 
 ## 3. Technologies
 
